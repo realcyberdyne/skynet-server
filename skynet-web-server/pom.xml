@@ -23,6 +23,13 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!--Import skynet connection manager-->
+        <dependency>
+            <groupId>com.cyberdyne.skynet.connection.manager</groupId>
+            <artifactId>skynet-connection-manager</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- List all your dependencies here -->
         <dependency>
             <groupId>org.json</groupId>

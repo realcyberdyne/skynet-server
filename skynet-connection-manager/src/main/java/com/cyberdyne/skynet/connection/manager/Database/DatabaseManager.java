@@ -65,7 +65,7 @@ public class DatabaseManager {
 
             // Create connection_models table
             statement.executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS connection_models (" +
+                    "CREATE TABLE IF NOT EXISTS connection_tbl (" +
                             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                             "key TEXT NOT NULL, " +
                             "create_user_id INTEGER NOT NULL, " +
@@ -74,7 +74,7 @@ public class DatabaseManager {
 
             // Create users_model table
             statement.executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS users_model (" +
+                    "CREATE TABLE IF NOT EXISTS users_tbl (" +
                             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                             "username TEXT NOT NULL UNIQUE, " +
                             "password TEXT NOT NULL, " +

@@ -18,14 +18,14 @@ public class DatabaseTests
     @Test
     public void GetINSERTDatabaseTest()
     {
-        assertTrue(new DatabaseManager().OprationOnDatabase("INSERT INTO users_model (username, password, datetime) VALUES ('reza', '******', '2025SEP3')"));
+        assertTrue(new DatabaseManager().OprationOnDatabase("INSERT INTO users_tbl (username, password, datetime) VALUES ('reza', '******', '2025SEP3')"));
     }
 
 
     @Test
     public void GetSELECTDatabaseTest()
     {
-        assertEquals(new DatabaseManager().SelectFromDatabase("SELECT * FROM users_model;").size(),1);
+        assertEquals(new DatabaseManager().SelectFromDatabase("SELECT * FROM users_tbl;").size(),1);
     }
 
 

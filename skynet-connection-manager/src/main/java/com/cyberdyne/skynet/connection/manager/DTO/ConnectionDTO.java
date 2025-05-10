@@ -6,12 +6,10 @@ import com.cyberdyne.skynet.connection.manager.Services.DateTime.DateTime;
 import com.cyberdyne.skynet.connection.manager.Services.Hash.Hash;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class UsersDTO
+public class ConnectionDTO
 {
-
-
+    
     //Get Insert new user to database
     public boolean GetInsertNewUser(Users_Model NUser)
     {
@@ -23,7 +21,7 @@ public class UsersDTO
             String CurrentDateTime = DateTime.GetDateTime();
 
             //Get generate sql quary
-            String NewUserQuary = "INSERT INTO users_tbl (username, password, datetime) VALUES ('" + NUser.getUseename() + "', '" + HashedPassword + "', '" + CurrentDateTime + "')";
+            String NewUserQuary = "INSERT INTO connection_tbl (username, password, datetime) VALUES ('" + NUser.getUseename() + "', '" + HashedPassword + "', '" + CurrentDateTime + "')";
 
             //Get submit on database
             return new DatabaseManager().OprationOnDatabase(NewUserQuary);
@@ -43,7 +41,7 @@ public class UsersDTO
         try
         {
             //Get generate sql quary
-            String NewUserQuary = "SELECT * FROM users_tbl";
+            String NewUserQuary = "SELECT * FROM connection_tbl";
 
             //Get submit on database
             ArrayList<ArrayList<String>> SELECTUser = new DatabaseManager().SelectFromDatabase(NewUserQuary);
@@ -70,7 +68,7 @@ public class UsersDTO
         try
         {
             //Get generate sql quary
-            String NewUserQuary = "SELECT * FROM users_tbl WHERE username = '"+Username+"' AND password='"+Password+"';";
+            String NewUserQuary = "SELECT * FROM connection_tbl WHERE username = '"+Username+"' AND password='"+Password+"';";
 
             //Get submit on database
             ArrayList<ArrayList<String>> SELECTUser = new DatabaseManager().SelectFromDatabase(NewUserQuary);
@@ -100,7 +98,7 @@ public class UsersDTO
             String HashedPassword = Hash.hashPassword(Passoword);
 
             //Get generate sql quary
-            String NewUserQuary = "UPDATE users_tbl SET username='"+Username+"',password='"+HashedPassword+"' WHERE id="+id+";";
+            String NewUserQuary = "UPDATE connection_tbl SET username='"+Username+"',password='"+HashedPassword+"' WHERE id="+id+";";
 
             //Get submit on database
             return new DatabaseManager().OprationOnDatabase(NewUserQuary);
@@ -121,7 +119,7 @@ public class UsersDTO
         try
         {
             //Get generate sql quary
-            String NewUserQuary = "DELETE FROM users_tbl WHERE id="+id+";";
+            String NewUserQuary = "DELETE FROM connection_tbl WHERE id="+id+";";
 
             //Get submit on database
             return new DatabaseManager().OprationOnDatabase(NewUserQuary);
@@ -133,5 +131,5 @@ public class UsersDTO
         }
         return false;
     }
-
+    
 }

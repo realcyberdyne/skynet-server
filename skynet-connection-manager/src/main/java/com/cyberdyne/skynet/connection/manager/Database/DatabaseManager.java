@@ -1,5 +1,8 @@
 package com.cyberdyne.skynet.connection.manager.Database;
 
+import com.cyberdyne.skynet.connection.manager.DTO.UsersDTO;
+import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
+
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,7 +27,8 @@ public class DatabaseManager {
             createConnection();
 
             // If database didn't exist, create tables
-            if (!dbExists) {
+            if (!dbExists)
+            {
                 createTablesInDB();
             }
         } catch (Exception e) {
@@ -83,6 +87,11 @@ public class DatabaseManager {
             );
 
             statement.close();
+
+            //Get add admin user to database
+            Users_Model NUser=new Users_Model("admin","admin","");
+            new UsersDTO().GetInsertNewUser(NUser);
+
             return true;
         } catch (SQLException e) {
             System.out.println("Error in creating database tables: " + e.getMessage());

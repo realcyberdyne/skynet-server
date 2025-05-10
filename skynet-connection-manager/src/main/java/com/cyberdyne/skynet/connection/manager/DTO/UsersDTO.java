@@ -3,8 +3,9 @@ package com.cyberdyne.skynet.connection.manager.DTO;
 import com.cyberdyne.skynet.connection.manager.Database.DatabaseManager;
 import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
 import com.cyberdyne.skynet.connection.manager.Services.DateTime.DateTime;
-import com.cyberdyne.skynet.connection.manager.Services.Hash.Hash;
+import com.google.common.hash.Hashing;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class UsersDTO
     {
         try
         {
-            String HashedPassword = Hash.hashPassword(NUser.getPassword());
+            String HashedPassword = Hashing.sha256().hashString(NUser.getPassword(), StandardCharsets.UTF_8).toString();
 
             //Get current datatime
             String CurrentDateTime = DateTime.GetDateTime();
@@ -97,7 +98,7 @@ public class UsersDTO
         try
         {
             //Get hash password
-            String HashedPassword = Hash.hashPassword(Passoword);
+            String HashedPassword = Hashing.sha256().hashString(Passoword, StandardCharsets.UTF_8).toString();
 
             //Get generate sql quary
             String NewUserQuary = "UPDATE users_tbl SET username='"+Username+"',password='"+HashedPassword+"' WHERE id="+id+";";

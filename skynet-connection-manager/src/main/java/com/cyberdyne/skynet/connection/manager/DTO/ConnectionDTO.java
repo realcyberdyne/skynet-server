@@ -4,7 +4,6 @@ import com.cyberdyne.skynet.connection.manager.Database.DatabaseManager;
 import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;
 import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
 import com.cyberdyne.skynet.connection.manager.Services.DateTime.DateTime;
-import com.cyberdyne.skynet.connection.manager.Services.Hash.Hash;
 import com.cyberdyne.skynet.connection.manager.Services.KeyGenerator.KeyGenerator;
 
 import java.util.ArrayList;

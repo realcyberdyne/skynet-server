@@ -70,8 +70,10 @@ public class UsersDTO
         ArrayList<Users_Model> result=new ArrayList<>();
         try
         {
+            String HashedPassword = Hashing.sha256().hashString(Password, StandardCharsets.UTF_8).toString();
+
             //Get generate sql quary
-            String NewUserQuary = "SELECT * FROM users_tbl WHERE username = '"+Username+"' AND password='"+Password+"';";
+            String NewUserQuary = "SELECT * FROM users_tbl WHERE username = '"+Username+"' AND password='"+HashedPassword+"';";
 
             //Get submit on database
             ArrayList<ArrayList<String>> SELECTUser = new DatabaseManager().SelectFromDatabase(NewUserQuary);

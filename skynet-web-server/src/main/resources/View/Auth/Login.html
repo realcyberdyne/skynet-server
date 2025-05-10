@@ -11,19 +11,73 @@
 <body>
 
 <!--Main content start-->
-<div id="main_content">
-    <div>
-        <form method="post">
-            <div class="class-form">
-                <label for="login_password_input">Please Enter Password</label>
-                <input id="login_password_input" type="password" name="password">
-            </div>
-
-            <button id="submit_button" type="submit">Login</button>
-
-        </form>
-    </div>
+<div id="main_content">    
+    <form method="post" id="main_content_login">
+        <h2>Login</h5>
+        <p>Please Fill all Requirement Fields</p>
+        <div class="input_feild">
+            <input id="username_input_input" type="text" name="username" placeholder="Please Enter Username">
+        </div>
+        <div class="input_feild">
+            <input id="password_input_input" type="password" name="password" placeholder="Please Enter Password">
+        </div>
+        <div class="input_feild">
+            <input id="submit_input_input" type="submit" name="submit">
+        </div>
+    </form>
 </div>
+<style>
+    #main_content_login
+    {
+        width: 270px;
+        border-radius: 10px;
+    }
+
+    #main_content_login>h2
+    {
+        width: 100%;
+        text-align: center;
+        margin: 5px auto;
+        font-size: 20px;
+    }
+
+    #main_content_login>p
+    {
+        width: 100%;
+        text-align: center;
+        margin: 8px auto 10px auto;
+        font-size: 14px;
+    }
+
+    .input_feild
+    {
+        width: 100%;
+        display: flex;
+    }
+
+    .input_feild>*
+    {
+        width: 100%;
+        margin: 8px auto;
+        text-align: center;
+    }
+
+    .input_feild>input
+    {
+        width: 100%;
+        padding: 8px 20px;
+        border: 1px solid #999;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .input_feild>input[type="submit"]
+    {
+        background-color: #008de6;
+        color: #FFF;
+    }
+
+</style>
 <!--Main content end-->
 
 <!--background start-->

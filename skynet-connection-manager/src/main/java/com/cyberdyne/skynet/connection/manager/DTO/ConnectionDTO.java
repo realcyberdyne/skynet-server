@@ -1,135 +1,150 @@
 package com.cyberdyne.skynet.connection.manager.DTO;
 
 import com.cyberdyne.skynet.connection.manager.Database.DatabaseManager;
+import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;
 import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
 import com.cyberdyne.skynet.connection.manager.Services.DateTime.DateTime;
 import com.cyberdyne.skynet.connection.manager.Services.Hash.Hash;
+import com.cyberdyne.skynet.connection.manager.Services.KeyGenerator.KeyGenerator;
 
 import java.util.ArrayList;
 
 public class ConnectionDTO
 {
     
-    //Get Insert new user to database
-    public boolean GetInsertNewUser(Users_Model NUser)
+    //Get Insert new connection to database
+    public boolean GetInsertNewConnection(Connectin_Models NConnection)
     {
         try
         {
-            String HashedPassword = Hash.hashPassword(NUser.getPassword());
-
-            //Get current datatime
-            String CurrentDateTime = DateTime.GetDateTime();
+            //Generate Key
+            NConnection.setKey(KeyGenerator.GetGenerateKey());
 
             //Get generate sql quary
-            String NewUserQuary = "INSERT INTO connection_tbl (username, password, datetime) VALUES ('" + NUser.getUseename() + "', '" + HashedPassword + "', '" + CurrentDateTime + "')";
+            String Quary = "INSERT INTO connection_tbl (key,create_user_id,protocol,status) VALUES ('"+NConnection.getKey()+"',"+NConnection.getCreate_user_id()+",'"+NConnection.getProtocol()+"',"+NConnection.isStatus()+")";
 
             //Get submit on database
-            return new DatabaseManager().OprationOnDatabase(NewUserQuary);
+            return new DatabaseManager().OprationOnDatabase(Quary);
         }
         catch (Exception e)
         {
-            System.out.println("Error in UserDTO : "+e.getMessage());
+            System.out.println("Error in ConnectionDTO : "+e.getMessage());
         }
         return false;
     }
 
 
-    //Get Select Users from database
-    public ArrayList<Users_Model> GetSelectUsers()
+
+    //Get All Connections
+    public ArrayList<Connectin_Models> GetSelectConnections()
     {
-        ArrayList<Users_Model> result=new ArrayList<>();
+        ArrayList<Connectin_Models> result=new ArrayList<>();
         try
         {
             //Get generate sql quary
-            String NewUserQuary = "SELECT * FROM connection_tbl";
+            String Quary = "SELECT * FROM connection_tbl;";
 
             //Get submit on database
-            ArrayList<ArrayList<String>> SELECTUser = new DatabaseManager().SelectFromDatabase(NewUserQuary);
+            ArrayList<ArrayList<String>> SELECTUser = new DatabaseManager().SelectFromDatabase(Quary);
 
             for(int i=0;i<SELECTUser.size();i++)
             {
                 ArrayList<String> UserRow=SELECTUser.get(i);
-                Users_Model UserData = new Users_Model(Long.parseLong(UserRow.get(0)),UserRow.get(1),UserRow.get(2),UserRow.get(3));
-                result.add(UserData);
+                try {
+                    long id = Long.parseLong(UserRow.get(0));
+                    String key = UserRow.get(1);
+                    String protocol = UserRow.get(2);
+                    long user_id = Long.parseLong(UserRow.get(3));
+                    boolean status = Boolean.parseBoolean(UserRow.get(4));
+
+                    Connectin_Models ConnectionData = new Connectin_Models(id, key, protocol, user_id, status);
+                    result.add(ConnectionData);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Error : "+e.getMessage());
+                }
             }
         }
         catch (Exception e)
         {
-            System.out.println("Error in UsersDTO : "+e.getMessage());
+            System.out.println("Error in ConnectionDTO : "+e.getMessage());
         }
         return result;
     }
 
 
-    //Get Select Users from database
-    public ArrayList<Users_Model> GetSelectUser(String Username,String Password)
+    //Get All Connections
+    public Connectin_Models GetConnection(long id)
     {
-        ArrayList<Users_Model> result=new ArrayList<>();
+        Connectin_Models result=new Connectin_Models();
         try
         {
             //Get generate sql quary
-            String NewUserQuary = "SELECT * FROM connection_tbl WHERE username = '"+Username+"' AND password='"+Password+"';";
+            String Quary = "SELECT * FROM connection_tbl WHERE id = "+id+";";
 
             //Get submit on database
-            ArrayList<ArrayList<String>> SELECTUser = new DatabaseManager().SelectFromDatabase(NewUserQuary);
+            ArrayList<ArrayList<String>> SELECTUser = new DatabaseManager().SelectFromDatabase(Quary);
 
-            for(int i=0;i<SELECTUser.size();i++)
+            if(SELECTUser.size()>=1)
             {
-                ArrayList<String> UserRow=SELECTUser.get(i);
-                Users_Model UserData = new Users_Model(Long.parseLong(UserRow.get(0)),UserRow.get(1),UserRow.get(2),UserRow.get(3));
-                result.add(UserData);
+                long connection_id = Long.parseLong(SELECTUser.get(0).get(0));
+                String key = SELECTUser.get(0).get(1);
+                String protocol = SELECTUser.get(0).get(2);
+                long user_id = Long.parseLong(SELECTUser.get(0).get(3));
+                boolean status = Boolean.parseBoolean(SELECTUser.get(0).get(4));
+
+                result.setId(connection_id);
+                result.setKey(key);
+                result.setProtocol(protocol);
+                result.setCreate_user_id(user_id);
+                result.setStatus(status);
             }
         }
         catch (Exception e)
         {
-            System.out.println("Error in UsersDTO : "+e.getMessage());
+            System.out.println("Error in ConnectionDTO : "+e.getMessage());
         }
         return result;
     }
 
 
-
-    //Get Update User from database
-    public boolean GetSelectUser(long id,String Username,String Passoword)
+    //Get Remove new connecton to database
+    public boolean GetRemoveConnection(long id)
     {
         try
         {
-            //Get hash password
-            String HashedPassword = Hash.hashPassword(Passoword);
-
             //Get generate sql quary
-            String NewUserQuary = "UPDATE connection_tbl SET username='"+Username+"',password='"+HashedPassword+"' WHERE id="+id+";";
+            String Quary = "DELETE FROM connection_tbl WHERE id = "+id+";";
 
             //Get submit on database
-            return new DatabaseManager().OprationOnDatabase(NewUserQuary);
-
+            return new DatabaseManager().OprationOnDatabase(Quary);
         }
         catch (Exception e)
         {
-            System.out.println("Error in UsersDTO : "+e.getMessage());
+            System.out.println("Error in ConnectionDTO : "+e.getMessage());
         }
         return false;
     }
 
 
-
-    //Get delete User from database
-    public boolean GetSelectUser(long id)
+    //Get update connection in database
+    public boolean GetUpdateConnection(Connectin_Models UConnection)
     {
         try
         {
             //Get generate sql quary
-            String NewUserQuary = "DELETE FROM connection_tbl WHERE id="+id+";";
+            String Quary = "UPDATE connection_tbl SET key='"+UConnection.getKey()+"',status="+UConnection.isStatus()+",protocol='"+UConnection.getProtocol()+"' WHERE id = "+UConnection.getId()+";";
 
             //Get submit on database
-            return new DatabaseManager().OprationOnDatabase(NewUserQuary);
-
+            return new DatabaseManager().OprationOnDatabase(Quary);
         }
         catch (Exception e)
         {
-            System.out.println("Error in UsersDTO : "+e.getMessage());
+            System.out.println("Error in ConnectionDTO : "+e.getMessage());
         }
         return false;
     }
-    
+
+
 }

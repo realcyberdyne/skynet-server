@@ -68,6 +68,7 @@ public class DatabaseManager {
                     "CREATE TABLE IF NOT EXISTS connection_tbl (" +
                             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                             "key TEXT NOT NULL, " +
+                            "protocol TEXT NOT NULL, " +
                             "create_user_id INTEGER NOT NULL, " +
                             "status INTEGER DEFAULT 0)"
             );

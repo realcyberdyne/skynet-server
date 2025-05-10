@@ -12,7 +12,8 @@ public class UserDTOTests
     public void GetInsertNewUserToDataBaseTest()
     {
         Users_Model NUser=new Users_Model("r","*****","");
-        Assert.assertEquals(new UsersDTO().GetInsertNewUser(NUser),true);
+        boolean result = new UsersDTO().GetInsertNewUser(NUser);
+        Assert.assertEquals(result,true);
     }
 
 
@@ -20,7 +21,8 @@ public class UserDTOTests
     public void GetSelectFromUserInDataBaseTest()
     {
         ArrayList Users = new UsersDTO().GetSelectUsers();
-        Assert.assertEquals(Users.size(),1);
+        int result = Users.size();
+        Assert.assertEquals(result,1);
     }
 
 }

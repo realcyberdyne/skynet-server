@@ -2,11 +2,15 @@ package cyberdyne.generator.Controllers;
 
 import com.cyberdyne.skynet.connection.manager.DTO.ConnectionDTO;
 import com.cyberdyne.skynet.connection.manager.DTO.UsersDTO;
+import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
 import com.cyberdyne.skynet.connection.manager.Services.ResourceMgmt.ResourceMgmt;
 import cyberdyne.generator.Http.Auth.Auth;
 import cyberdyne.generator.Http.Models.ResponseModel;
 import cyberdyne.generator.Http.View.HttpView;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardController
 {
@@ -45,6 +49,153 @@ public class DashboardController
                                                     .replace("@CpuUsage",CpuUsage)
                                                     .replace("@RamUsage",RamUsage)
         );
+    }
+
+
+
+
+    //Get New User Page
+    public ResponseModel Users(JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+
+        //UsersTbl
+        ArrayList<Users_Model> AllUsers = new UsersDTO().GetSelectUsers();
+        String UserTbl="";
+        for(int i=0;i<AllUsers.size();i++)
+        {
+            if(AllUsers.get(i).getId() != Auth.UserData.getId())
+                UserTbl+="<tr><td>#"+AllUsers.get(i).getId()+"</td><td>"+AllUsers.get(i).getUseename()+"</td><td>"+AllUsers.get(i).getDatetime()+"</td><td><span class=\"status active\">Completed</span></td><td><button onclick=\"RemoveUserButtonClickEvent("+AllUsers.get(i).getId()+")\" class=\"action-btn delete\">❌</button></td></tr>";
+        }
+
+
+        return new ResponseModel("200",
+                "text/html",
+                new HttpView().View("Dashboard/users")
+                        .replace("@UsersData",UserTbl)
+
+        );
+    }
+
+
+
+    //Get New User Page
+    public ResponseModel RemoveUserDone(JSONObject parametrs_json,JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        boolean remove_result = new UsersDTO().GetRemoveUser(Long.parseLong(parametrs_json.get("user_id").toString()));
+
+        if(remove_result)
+        {
+            return new ResponseModel("200",
+                    "text/json",
+                    "{\"status\":\"successful\"}"
+            );
+        }
+        else
+        {
+            return new ResponseModel("200",
+                    "text/json",
+                    "{\"status\":\"User Not Vaild\"}"
+            );
+        }
+    }
+
+
+
+
+
+    //Get Add new Connection
+    public ResponseModel NewConnection(JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        return new ResponseModel("200",
+                "text/html",
+                new HttpView().View("Dashboard/newconnection")
+
+        );
+    }
+
+
+
+
+
+    //Get New User Page
+    public ResponseModel NewUser(JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        return new ResponseModel("200",
+                "text/html",
+                new HttpView().View("Dashboard/newuser")
+
+        );
+    }
+
+
+
+    //Post New User Done
+    public ResponseModel NewUserDone(JSONObject parametrs_json,JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        new UsersDTO().GetInsertNewUser(new Users_Model(parametrs_json.get("username").toString(),
+                                                        parametrs_json.get("password").toString(),
+                                                "")
+        );
+
+        return new ResponseModel("200","text/html","<script> window.location.href='/Panel/Dashboard'; </script>");
+    }
+
+
+
+
+
+    //Get Profile Page
+    public ResponseModel Profile(JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        return new ResponseModel("200",
+                "text/html",
+                new HttpView().View("Dashboard/profile")
+                        .replace("@username",Auth.UserData.getUseename())
+        );
+    }
+
+
+    //Post Profile Page
+    public ResponseModel ProfileDone(JSONObject parametrs_json,JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        new UsersDTO().GetUpdateUser(Auth.UserData.getId(), parametrs_json.get("username").toString(),parametrs_json.get("password").toString());
+
+        return unauthorizedResponse();
     }
 
 

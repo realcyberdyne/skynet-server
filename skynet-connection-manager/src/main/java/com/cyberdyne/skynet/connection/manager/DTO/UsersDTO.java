@@ -95,7 +95,7 @@ public class UsersDTO
 
 
     //Get Update User from database
-    public boolean GetSelectUser(long id,String Username,String Passoword)
+    public boolean GetUpdateUser(long id,String Username,String Passoword)
     {
         try
         {
@@ -119,7 +119,7 @@ public class UsersDTO
 
 
     //Get delete User from database
-    public boolean GetSelectUser(long id)
+    public boolean GetRemoveUser(long id)
     {
         try
         {

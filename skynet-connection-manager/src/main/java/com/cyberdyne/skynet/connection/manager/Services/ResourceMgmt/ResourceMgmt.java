@@ -20,7 +20,7 @@ public class ResourceMgmt
             //System.out.println("CPU Usage: " + cpuUsagePercent + "%");
             return cpuUsagePercent+"%";
         } else {
-            System.out.println("CPU Usage: Not available");
+//            System.out.println("CPU Usage: Not available");
             return "CPU Usage: Not available";
         }
 
@@ -36,9 +36,9 @@ public class ResourceMgmt
         long freeMemory = runtime.freeMemory();     // JVM free memory
         long usedMemory = totalMemory - freeMemory;
 
-        System.out.printf("Used Memory: %.2f MB\n", usedMemory / (1024.0 * 1024));
-        System.out.printf("Free Memory: %.2f MB\n", freeMemory / (1024.0 * 1024));
-        System.out.printf("Total Memory: %.2f MB\n", totalMemory / (1024.0 * 1024));
+//        System.out.printf("Used Memory: %.2f MB\n", usedMemory / (1024.0 * 1024));
+//        System.out.printf("Free Memory: %.2f MB\n", freeMemory / (1024.0 * 1024));
+//        System.out.printf("Total Memory: %.2f MB\n", totalMemory / (1024.0 * 1024));
 
         return Math.round(usedMemory / (1024.0 * 1024))+"MB /"+Math.round(totalMemory / (1024.0 * 1024))+"MB";
     }

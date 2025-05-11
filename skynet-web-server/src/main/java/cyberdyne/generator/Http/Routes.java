@@ -49,6 +49,18 @@ public class Routes
             case "/Panel/Dashboard":
                 response=new DashboardController(Header).Dashboard(Header);
                 break;
+            case "/Panel/NewUser":
+                response=new DashboardController(Header).NewUser(Header);
+                break;
+            case "/Panel/NewConnection":
+                response=new DashboardController(Header).NewConnection(Header);
+                break;
+            case "/Panel/Users":
+                response=new DashboardController(Header).Users(Header);
+                break;
+            case "/Panel/Profile":
+                response=new DashboardController(Header).Profile(Header);
+                break;
             case "/Panel/Logout":
                 response=new DashboardController(Header).Logout(Header);
                 break;
@@ -108,6 +120,15 @@ public class Routes
         {
             case "/Login":
                 response=new LoginController().LoginDone(parametrs_json,Header);
+                break;
+            case "/Panel/Profile":
+                response=new DashboardController(Header).ProfileDone(parametrs_json,Header);
+                break;
+            case "/Panel/NewUser":
+                response=new DashboardController(Header).NewUserDone(parametrs_json,Header);
+                break;
+            case "/Panel/RemoveUser":
+                response=new DashboardController(Header).RemoveUserDone(parametrs_json,Header);
                 break;
         }
 

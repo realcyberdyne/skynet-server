@@ -1,0 +1,40 @@
+@include('Components/HeaderDash');
+
+<!-- Main Content Area -->
+<main class="main-content">
+    <div class="header">
+        <button class="toggle-sidebar" id="toggleSidebar">☰</button>
+        <h1 class="page-title">User</h1>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="dashboard-stats">
+        <!-- Profile Page Section -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">New User</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" id="profileForm">
+                    <div style="margin-bottom: 15px;">
+                        <label for="username" style="display: block; margin-bottom: 5px;">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Enter new username" required
+                               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label for="password" style="display: block; margin-bottom: 5px;">New Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter new password" required
+                               style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    </div>
+                    <button type="submit"
+                            style="background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        Add New
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+@include('Components/FooterDash')

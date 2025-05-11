@@ -78,3 +78,38 @@ function removeAuthCookie(cookie_name)
 
     console.log("Auth cookie has been removed");
 }
+
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+
+
+function RemoveUserButtonClickEvent(user_id)
+{
+    if(confirm("Are You Sure?")) {
+        // Create the URL with query parameter
+        const url = `/Panel/RemoveUser?user_id=${encodeURIComponent(user_id)}`;
+
+        fetch(url, {
+            method: 'POST',
+            credentials: 'include', // Ensures cookies like sessionid are sent
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cookie': 'auth=' + getCookie("auth")
+            }
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Response:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        location.reload(true);
+    }
+}

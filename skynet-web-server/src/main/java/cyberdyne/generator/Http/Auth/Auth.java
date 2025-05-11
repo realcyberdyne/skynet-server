@@ -12,8 +12,8 @@ public class Auth
 {
 
     public static String AuthCookieName="auth";
-
     public static ArrayList<ArrayList<String>> AuthCodes=new ArrayList<>();
+    public static Users_Model UserData=new Users_Model();
 
 
 
@@ -94,14 +94,29 @@ public class Auth
                 String Token = getAuthValueFromCookie(Header);
                 if(!Token.equals(""))
                 {
-                    for(int i=0;i<AuthCodes.size();i++)
-                    {
+                    for (int i = 0; i < AuthCodes.size(); i++) {
                         ArrayList<String> Auths = AuthCodes.get(i);
-                        if(Auths.get(3).equals(Token))
+
+                        if (Auths != null && Auths.size() >= 4)
                         {
-                            return true;
+                            if (Auths.get(3).equals(Token))
+                            {
+                                String []getid = Auths.toString().split(",");
+                                String id = getid[0].replace("[","");
+
+                                UserData.setId(Long.parseLong(id));
+                                UserData.setUseename(Auths.get(1));
+                                UserData.setDatetime(Auths.get(2));
+
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            System.out.println("Invalid Auths entry at index " + i);
                         }
                     }
+
                 }
             }
         }
@@ -119,7 +134,7 @@ public class Auth
         try {
             if (Header.has("Cookie")) {
                 String cookie = Header.getString("Cookie");
-                System.out.println("Cookies: " + cookie);
+//                System.out.println("Cookies: " + cookie);
 
                 // Split the cookie string by semicolons
                 String[] cookies = cookie.split(";");

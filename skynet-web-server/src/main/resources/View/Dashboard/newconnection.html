@@ -1,0 +1,43 @@
+@include('Components/HeaderDash');
+
+<!-- Main Content Area -->
+<main class="main-content">
+    <div class="header">
+        <button class="toggle-sidebar" id="toggleSidebar">☰</button>
+        <h1 class="page-title">Connection</h1>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="dashboard-stats">
+        <!-- Profile Page Section -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">New Connection</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" id="profileForm">
+                    <div style="margin-bottom: 15px;">
+                        <label for="protocol" style="display: block; margin-bottom: 5px;">Protocol</label>
+                        <select id="protocol" name="protocol" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                            <option value="T600">T600</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label for="status" style="display: block; margin-bottom: 5px;">Status</label>
+                        <select id="status" name="protocol" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                            <option value="1">Active</option>
+                            <option value="0">Deative</option>
+                        </select>
+                    </div>
+                    <button type="submit"
+                            style="background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        Add New
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+@include('Components/FooterDash')

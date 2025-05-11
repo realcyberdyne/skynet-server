@@ -8,6 +8,9 @@ public class Users_Model
     String password;
     String datetime;
 
+    public Users_Model() {
+    }
+
     public Users_Model(String useename, String password, String datetime)
     {
         this.id = id;

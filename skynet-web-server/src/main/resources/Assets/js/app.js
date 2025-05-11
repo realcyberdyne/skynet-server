@@ -68,3 +68,13 @@ function eraseCookie(name)
 {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
+
+function removeAuthCookie(cookie_name)
+{
+    // Set expiration date to the past by using expires or setting max-age to 0
+    document.cookie = cookie_name+"=; path=/; max-age=0;";
+    // Alternative method using expires
+    // document.cookie = "auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
+    console.log("Auth cookie has been removed");
+}

@@ -2,6 +2,7 @@ package com.cyberdyne.skynet.connection.manager.Database;
 
 import com.cyberdyne.skynet.connection.manager.DTO.UsersDTO;
 import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
+import com.cyberdyne.skynet.connection.manager.Services.KeyGenerator.KeyGenerator;
 
 import java.io.File;
 import java.sql.*;
@@ -89,7 +90,10 @@ public class DatabaseManager {
             statement.close();
 
             //Get add admin user to database
-            Users_Model NUser=new Users_Model("admin","admin","");
+            String AdminPassword = KeyGenerator.GetGenerateKey();
+            System.out.println("Username : admin");
+            System.out.println("Password : "+AdminPassword);
+            Users_Model NUser=new Users_Model("admin",AdminPassword,"");
             new UsersDTO().GetInsertNewUser(NUser);
 
             return true;

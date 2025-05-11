@@ -72,7 +72,7 @@ public class Auth
                 String cookie = Header.getString("Cookie");
                 //System.out.println(cookie);
                 // Return true if "auth=" exists in the cookie string
-                return cookie.contains("auth=");
+                return cookie.contains(AuthCookieName+"=");
             }
         }
         catch (Exception e)
@@ -125,8 +125,8 @@ public class Auth
                 String[] cookies = cookie.split(";");
                 for (String c : cookies) {
                     c = c.trim(); // remove leading/trailing whitespace
-                    if (c.startsWith("auth=")) {
-                        return c.substring("auth=".length()); // return the value after "auth="
+                    if (c.startsWith(AuthCookieName+"=")) {
+                        return c.substring((AuthCookieName+"=").length()); // return the value after "auth="
                     }
                 }
             }

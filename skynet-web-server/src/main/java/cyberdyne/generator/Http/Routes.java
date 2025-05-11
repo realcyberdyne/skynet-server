@@ -49,6 +49,9 @@ public class Routes
             case "/Panel/Dashboard":
                 response=new DashboardController(Header).Dashboard(Header);
                 break;
+            case "/Panel/Logout":
+                response=new DashboardController(Header).Logout(Header);
+                break;
         }
 
         return response;

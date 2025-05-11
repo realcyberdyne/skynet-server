@@ -70,7 +70,7 @@ public class Auth
             if (Header.has("Cookie"))
             {
                 String cookie = Header.getString("Cookie");
-                System.out.println(cookie);
+                //System.out.println(cookie);
                 // Return true if "auth=" exists in the cookie string
                 return cookie.contains("auth=");
             }
@@ -81,6 +81,61 @@ public class Auth
         }
         return false;
     }
+
+
+
+    //Auth Header check in cookies
+    public boolean AuthCheckLogined(JSONObject Header)
+    {
+        try
+        {
+            if(AuthCheckExist(Header))
+            {
+                String Token = getAuthValueFromCookie(Header);
+                if(!Token.equals(""))
+                {
+                    for(int i=0;i<AuthCodes.size();i++)
+                    {
+                        ArrayList<String> Auths = AuthCodes.get(i);
+                        if(Auths.get(3).equals(Token))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace(); // Optional: print stack trace for debugging
+        }
+        return false;
+    }
+
+
+
+    //Get auth value
+    private String getAuthValueFromCookie(JSONObject Header) {
+        try {
+            if (Header.has("Cookie")) {
+                String cookie = Header.getString("Cookie");
+                System.out.println("Cookies: " + cookie);
+
+                // Split the cookie string by semicolons
+                String[] cookies = cookie.split(";");
+                for (String c : cookies) {
+                    c = c.trim(); // remove leading/trailing whitespace
+                    if (c.startsWith("auth=")) {
+                        return c.substring("auth=".length()); // return the value after "auth="
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Optional: print stack trace for debugging
+        }
+        return null; // auth not found
+    }
+
 
 
 

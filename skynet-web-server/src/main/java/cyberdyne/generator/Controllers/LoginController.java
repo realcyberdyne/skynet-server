@@ -13,7 +13,7 @@ public class LoginController
     {
         if(new Auth().AuthCheckExist(Header))
         {
-            return new ResponseModel("200", "text/html", "<script> window.location='/Dashboard'; </script>");
+            return new ResponseModel("200", "text/html", "<script> window.location='/Panel/Dashboard'; </script>");
         }
         else
         {
@@ -32,7 +32,7 @@ public class LoginController
 
         if(!AuthToken.equals(""))
         {
-            return new ResponseModel("200", "text/html", "<script>   document.cookie = \""+Auth.AuthCookieName+"="+AuthToken+"; path=/; max-age=\" + 7 * 24 * 60 * 60 + \";\"; window.location='/Dashboard'; </script>");
+            return new ResponseModel("200", "text/html", "<script>   document.cookie = \""+Auth.AuthCookieName+"="+AuthToken+"; path=/; max-age=\" + 7 * 24 * 60 * 60 + \";\"; window.location='/Panel/Dashboard'; </script>");
         }
         else
         {

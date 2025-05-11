@@ -1,5 +1,6 @@
 package cyberdyne.generator.Http;
 
+import cyberdyne.generator.Controllers.DashboardController;
 import cyberdyne.generator.Controllers.LoginController;
 import cyberdyne.generator.Functions.Hash;
 import cyberdyne.generator.Http.Models.ResponseModel;
@@ -44,6 +45,9 @@ public class Routes
                 break;
             case "/Login":
                 response=new LoginController().Login(Header);
+                break;
+            case "/Panel/Dashboard":
+                response=new DashboardController(Header).Dashboard(Header);
                 break;
         }
 

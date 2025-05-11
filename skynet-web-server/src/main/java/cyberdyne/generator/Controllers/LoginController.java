@@ -1,21 +1,24 @@
 package cyberdyne.generator.Controllers;
 
-import com.cyberdyne.skynet.connection.manager.DTO.UsersDTO;
-import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
-import cyberdyne.generator.Functions.RandomLoginPassword;
+import cyberdyne.generator.Http.Auth.Auth;
 import cyberdyne.generator.Http.Models.ResponseModel;
 import cyberdyne.generator.Http.View.HttpView;
 import org.json.JSONObject;
-
-import java.util.List;
 
 public class LoginController
 {
 
     //Get Login Page
-    public ResponseModel Login()
+    public ResponseModel Login(JSONObject Header)
     {
-        return new ResponseModel("200","text/html",new HttpView().View("Auth/Login"));
+        if(new Auth().AuthCheckExist(Header))
+        {
+            return new ResponseModel("200", "text/html", "<script> window.location='/Dashboard'; </script>");
+        }
+        else
+        {
+            return new ResponseModel("200", "text/html", new HttpView().View("Auth/Login"));
+        }
     }
 
 
@@ -25,11 +28,11 @@ public class LoginController
         String username = parametrs_json.get("username").toString();
         String password = parametrs_json.get("password").toString();
 
-        List<Users_Model> Users = new UsersDTO().GetSelectUser(username,password);
+        String AuthToken = new Auth().GetLoginCheckByUsernamePassword(username,password);
 
-        if(Users.size()>0)
+        if(!AuthToken.equals(""))
         {
-            return new ResponseModel("200", "text/html", "<script> window.location='/Dashboard'; </script>");
+            return new ResponseModel("200", "text/html", "<script>   document.cookie = \""+Auth.AuthCookieName+"="+AuthToken+"; path=/; max-age=\" + 7 * 24 * 60 * 60 + \";\"; window.location='/Dashboard'; </script>");
         }
         else
         {

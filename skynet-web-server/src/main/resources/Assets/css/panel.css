@@ -275,6 +275,7 @@ table tr:hover {
     font-size: 12px;
     font-weight: bold;
     display: inline-block;
+    cursor: pointer;
 }
 
 .status.active {

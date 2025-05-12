@@ -54,7 +54,7 @@ public class ConnectionDTO
                     String key = UserRow.get(1);
                     String protocol = UserRow.get(2);
                     long user_id = Long.parseLong(UserRow.get(3));
-                    boolean status = Boolean.parseBoolean(UserRow.get(4));
+                    boolean status = (UserRow.get(4).toString().equals("1"))?true:false;
 
                     Connectin_Models ConnectionData = new Connectin_Models(id, key, protocol, user_id, status);
                     result.add(ConnectionData);

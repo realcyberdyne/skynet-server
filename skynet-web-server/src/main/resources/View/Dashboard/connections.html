@@ -4,28 +4,29 @@
 <main class="main-content">
     <div class="header">
         <button class="toggle-sidebar" id="toggleSidebar">☰</button>
-        <h1 class="page-title">Users</h1>
+        <h1 class="page-title">Connections</h1>
     </div>
 
     <!-- Recent Orders Table -->
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">Users</h2>
+            <h2 class="card-title">Connections List</h2>
         </div>
         <div class="card-body">
             <table>
                 <thead>
                 <tr>
-                    <th>User ID</th>
-                    <th>Username</th>
-                    <th>DateTime</th>
+                    <th>Connection ID</th>
+                    <th>Protocol</th>
                     <th>Status</th>
                     <th>Action</th>
+                    <th>Key</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                    @UsersData
+                    @Connections
+
 
                 </tbody>
             </table>

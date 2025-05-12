@@ -55,6 +55,9 @@ public class Routes
             case "/Panel/NewConnection":
                 response=new DashboardController(Header).NewConnection(Header);
                 break;
+            case "/Panel/Connections":
+                response=new DashboardController(Header).Connections(Header);
+                break;
             case "/Panel/Users":
                 response=new DashboardController(Header).Users(Header);
                 break;
@@ -129,6 +132,15 @@ public class Routes
                 break;
             case "/Panel/RemoveUser":
                 response=new DashboardController(Header).RemoveUserDone(parametrs_json,Header);
+                break;
+            case "/Panel/NewConnection":
+                response=new DashboardController(Header).NewConnectionDone(parametrs_json,Header);
+                break;
+            case "/Panel/ChangeStatusConnection":
+                response=new DashboardController(Header).GetChangeConnectionsStatus(parametrs_json,Header);
+                break;
+            case "/Panel/RemoveConnection":
+                response=new DashboardController(Header).GetRemoveConnections(parametrs_json,Header);
                 break;
         }
 

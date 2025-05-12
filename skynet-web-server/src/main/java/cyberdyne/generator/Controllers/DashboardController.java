@@ -2,7 +2,9 @@ package cyberdyne.generator.Controllers;
 
 import com.cyberdyne.skynet.connection.manager.DTO.ConnectionDTO;
 import com.cyberdyne.skynet.connection.manager.DTO.UsersDTO;
+import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;
 import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
+import com.cyberdyne.skynet.connection.manager.Services.KeyCoder.KeyCoder;
 import com.cyberdyne.skynet.connection.manager.Services.ResourceMgmt.ResourceMgmt;
 import cyberdyne.generator.Http.Auth.Auth;
 import cyberdyne.generator.Http.Models.ResponseModel;
@@ -61,7 +63,6 @@ public class DashboardController
         {
             return unauthorizedResponse();
         }
-
 
         //UsersTbl
         ArrayList<Users_Model> AllUsers = new UsersDTO().GetSelectUsers();
@@ -128,6 +129,120 @@ public class DashboardController
         );
     }
 
+
+
+    //Get Add new Connection Submit
+    public ResponseModel NewConnectionDone(JSONObject parametrs_json,JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        boolean ConnectionStatus = false;
+        if(parametrs_json.get("status").toString().equals("1"))
+        {
+            ConnectionStatus=true;
+        }
+
+        new ConnectionDTO().GetInsertNewConnection(new Connectin_Models(
+                "",parametrs_json.get("protocol").toString(),Auth.UserData.getId(),ConnectionStatus
+        ));
+
+        return new ResponseModel("200",
+                "text/html",
+                "<script> window.location.href='/Panel/Connections'; </script>"
+        );
+    }
+
+
+
+
+    //Get Connections
+    public ResponseModel Connections(JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        //UsersTbl
+        ArrayList<Connectin_Models> AllConnections = new ConnectionDTO().GetSelectConnections();
+        String AllConnectionsTR="";
+        for(int i=0;i<AllConnections.size();i++)
+        {
+            String ConnectionProp= KeyCoder.KeyCode(AllConnections.get(i));
+            System.out.println("Status : "+AllConnections.get(i).isStatus());
+            if (AllConnections.get(i).isStatus())
+            {
+                AllConnectionsTR += "<tr><td>#" + AllConnections.get(i).getId() + "</td><td>" + AllConnections.get(i).getProtocol() + "</td><td><span onclick=\"GetChangeConnectionStatusOnClickEvent('" + AllConnections.get(i).getId() + "',false)\" class=\"status active\">Active</span></td><td><button onclick=\"GetRemoveConnectionOnClickEvent(" + AllConnections.get(i).getId() + ")\" class=\"action-btn delete\">❌</button></td><td><button onclick=\"copyToClipboard('" + AllConnections.get(i).getProtocol() + "://" + ConnectionProp + "')\" alt=\"Copy\" class=\"action-btn delete\">\uD83D\uDD12</button></td></tr>";
+            }
+            else
+            {
+                AllConnectionsTR += "<tr><td>#" + AllConnections.get(i).getId() + "</td><td>" + AllConnections.get(i).getProtocol() + "</td><td><span onclick=\"GetChangeConnectionStatusOnClickEvent('" + AllConnections.get(i).getId() + "',true)\" class=\"status inactive\">Inactive</span></td><td><button onclick=\"GetRemoveConnectionOnClickEvent(" + AllConnections.get(i).getId() + ")\" class=\"action-btn delete\">❌</button></td><td><button onclick=\"copyToClipboard('" + AllConnections.get(i).getProtocol() + "://" + ConnectionProp + "')\" alt=\"Copy\" class=\"action-btn delete\">\uD83D\uDD12</button></td></tr>";
+            }
+        }
+
+
+        return new ResponseModel("200",
+                "text/html",
+                new HttpView().View("Dashboard/connections")
+                        .replace("@Connections",AllConnectionsTR)
+        );
+    }
+
+
+
+
+    //Post change Connections status
+    public ResponseModel GetChangeConnectionsStatus(JSONObject parametrs_json,JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        Connectin_Models connection = new ConnectionDTO().GetConnection(Long.parseLong(parametrs_json.get("c_id").toString()));
+        System.out.println("Set statue : "+parametrs_json.get("status").toString());
+        if(parametrs_json.get("status").toString().equals("false"))
+        {
+            connection.setStatus(false);
+        }
+        else
+        {
+            connection.setStatus(true);
+        }
+
+        System.out.println("Connection is : "+connection.isStatus());
+
+        new ConnectionDTO().GetUpdateConnection(connection);
+
+        return new ResponseModel("200",
+                "text/html",
+                "<script> window.location.href='/Connections'; </script>"
+        );
+    }
+
+
+
+
+    //Post remove Connections
+    public ResponseModel GetRemoveConnections(JSONObject parametrs_json,JSONObject Header)
+    {
+        if(!Authed)
+        {
+            return unauthorizedResponse();
+        }
+
+        Connectin_Models connection = new ConnectionDTO().GetConnection(Long.parseLong(parametrs_json.get("c_id").toString()));
+
+        new ConnectionDTO().GetRemoveConnection(connection.getId());
+
+        return new ResponseModel("200",
+                "text/html",
+                "<script> window.location.href='/Connections'; </script>"
+        );
+    }
 
 
 

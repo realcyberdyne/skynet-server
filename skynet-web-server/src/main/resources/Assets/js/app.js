@@ -113,3 +113,87 @@ function RemoveUserButtonClickEvent(user_id)
         location.reload(true);
     }
 }
+
+
+
+function GetChangeConnectionStatusOnClickEvent(c_id,status)
+{
+    if(confirm("Are You Sure?")) {
+        // Create the URL with query parameter
+        const url = `/Panel/ChangeStatusConnection?c_id=${encodeURIComponent(c_id)}&status=${encodeURIComponent(status)}`;
+
+        fetch(url, {
+            method: 'POST',
+            credentials: 'include', // Ensures cookies like sessionid are sent
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cookie': 'auth=' + getCookie("auth")
+            }
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Response:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    location.reload(true);
+}
+
+
+
+function GetRemoveConnectionOnClickEvent(c_id)
+{
+    if(confirm("Are You Sure?")) {
+        // Create the URL with query parameter
+        const url = `/Panel/RemoveConnection?c_id=${encodeURIComponent(c_id)}`;
+
+        fetch(url, {
+            method: 'POST',
+            credentials: 'include', // Ensures cookies like sessionid are sent
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cookie': 'auth=' + getCookie("auth")
+            }
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Response:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        location.reload(true);
+    }
+}
+
+
+function copyToClipboard(text) {
+    if (!navigator.clipboard) {
+        // Fallback for older browsers
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed"; // avoid scrolling to bottom
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        try {
+            document.execCommand("copy");
+            console.log("Text copied using fallback");
+        } catch (err) {
+            console.error("Fallback copy failed", err);
+        }
+        document.body.removeChild(textarea);
+    } else {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                console.log("Text copied to clipboard");
+            })
+            .catch(err => {
+                console.error("Failed to copy text", err);
+            });
+    }
+    alert("Connection Key Copied To Clipboard");
+}

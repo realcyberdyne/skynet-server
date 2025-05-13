@@ -1,5 +1,6 @@
 package cyberdyne.generator.Controllers;
 
+import com.cyberdyne.skynet.Services.Config.Config;
 import com.cyberdyne.skynet.connection.manager.DTO.ConnectionDTO;
 import com.cyberdyne.skynet.connection.manager.DTO.UsersDTO;
 import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;
@@ -171,7 +172,7 @@ public class DashboardController
         String AllConnectionsTR="";
         for(int i=0;i<AllConnections.size();i++)
         {
-            String ConnectionProp= KeyCoder.KeyCode(AllConnections.get(i));
+            String ConnectionProp= KeyCoder.KeyCode(AllConnections.get(i), Config.VT600Enc);
             System.out.println("Status : "+AllConnections.get(i).isStatus());
             if (AllConnections.get(i).isStatus())
             {

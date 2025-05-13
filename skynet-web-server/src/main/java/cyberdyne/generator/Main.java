@@ -12,6 +12,10 @@ public class Main
         System.out.println("Welcome to Cyberdyne");
         System.out.println("Cyberdyne service : get start....");
 
+        //Get Config
+        new com.cyberdyne.skynet.Services.Config.Config();
+        System.out.println("Vpn Config file is loaded");
+
         //Get read properties values
         new Config();
         System.out.println("Cyberdyne service : Config file is loaded");
@@ -19,9 +23,6 @@ public class Main
         //Get begin http server
         new HttpServer();
         System.out.println("Cyberdyne service : Http server is started");
-
-        //Get Config
-        new com.cyberdyne.skynet.Services.Config.Config();
 
         //Get VPn
         new VPNCore(8090,"reza");

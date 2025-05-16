@@ -5,6 +5,7 @@ import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;
 import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
 import com.cyberdyne.skynet.connection.manager.Services.DateTime.DateTime;
 import com.cyberdyne.skynet.connection.manager.Services.KeyGenerator.KeyGenerator;
+import com.cyberdyne.skynet.connection.manager.Statics.Statics;
 
 import java.util.ArrayList;
 
@@ -69,6 +70,10 @@ public class ConnectionDTO
         {
             System.out.println("Error in ConnectionDTO : "+e.getMessage());
         }
+
+        //Get set on connections
+        Statics.All_Connections = result;
+
         return result;
     }
 

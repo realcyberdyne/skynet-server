@@ -1,6 +1,6 @@
 package com.cyberdyne.skynet.Services.VPN.Functions;
 
-import com.cyberdyne.skynet.Services.Encription.EncriptionCLS;
+import com.cyberdyne.skynet.Services.VPN.Encription.EncriptionCLS;
 
 import java.io.*;
 import java.net.ServerSocket;

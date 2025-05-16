@@ -1,4 +1,4 @@
-package com.cyberdyne.skynet.Services.Encription;
+package com.cyberdyne.skynet.Services.VPN.Encription;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

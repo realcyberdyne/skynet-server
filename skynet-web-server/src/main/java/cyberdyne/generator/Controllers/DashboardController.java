@@ -1,6 +1,6 @@
 package cyberdyne.generator.Controllers;
 
-import com.cyberdyne.skynet.Services.Config.Config;
+import com.cyberdyne.skynet.Services.VPN.Config.Config;
 import com.cyberdyne.skynet.connection.manager.DTO.ConnectionDTO;
 import com.cyberdyne.skynet.connection.manager.DTO.UsersDTO;
 import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;

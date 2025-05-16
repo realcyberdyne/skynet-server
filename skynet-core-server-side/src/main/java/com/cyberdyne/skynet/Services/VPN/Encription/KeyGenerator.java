@@ -1,4 +1,4 @@
-package com.cyberdyne.skynet.Services.Encription;
+package com.cyberdyne.skynet.Services.VPN.Encription;
 
 import java.util.UUID;
 

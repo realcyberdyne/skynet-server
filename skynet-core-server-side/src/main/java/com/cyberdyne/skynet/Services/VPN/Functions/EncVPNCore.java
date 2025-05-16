@@ -2,10 +2,7 @@ package com.cyberdyne.skynet.Services.VPN.Functions;
 
 import com.cyberdyne.skynet.Services.VPN.Encription.EncriptionBytesCLS;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -224,6 +221,22 @@ public class EncVPNCore
 
     // Thread to forward data from target to client (no encryption)
     private Thread forwardToClient(Socket targetSocket, Socket clientSocket) {
+
+        //Get Protocol hand shake start
+        try
+        {
+            DataInputStream DIS = new DataInputStream(clientSocket.getInputStream());
+            DataOutputStream DOS = new DataOutputStream(clientSocket.getOutputStream());
+
+            System.err.println("Readed : "+DIS.readUTF());
+        }
+        catch (Exception e)
+        {
+
+        }
+        //Get Protocol hand shake end
+
+
         Thread thread = new Thread(() -> {
             try {
                 InputStream targetInput = targetSocket.getInputStream();

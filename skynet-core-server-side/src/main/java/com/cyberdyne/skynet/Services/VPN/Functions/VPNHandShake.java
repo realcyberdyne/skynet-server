@@ -54,18 +54,22 @@ public class VPNHandShake
             String Hash = DIS.readUTF();
             //System.out.println("Hash : "+Hash);
             Connectin_Models Connection = new ConnectionDTO().GetConnectionByHash(Hash);
-            String Ipaddress = ShakedSocket.getInetAddress().getHostAddress();
 
-            System.out.println("Key is : "+Connection.getKey());
+            if(Connection.getProtocol().equals("T600"))
+            {
+                String Ipaddress = ShakedSocket.getInetAddress().getHostAddress();
 
-            //Get add to key connection data structure
-            Statics.IpConnection.add(
-                    new IpConnection_Model(
-                            Ipaddress,
-                            Connection.getKey(),
-                            Connection.getProtocol()
-                    )
-            );
+                //System.out.println("Key is : "+Connection.getKey());
+
+                //Get add to key connection data structure
+                Statics.IpConnection.add(
+                        new IpConnection_Model(
+                                Ipaddress,
+                                Connection.getKey(),
+                                Connection.getProtocol()
+                        )
+                );
+            }
         }
         catch (Exception e)
         {

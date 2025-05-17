@@ -147,7 +147,7 @@ public class DashboardController
         }
 
         new ConnectionDTO().GetInsertNewConnection(new Connectin_Models(
-                "",parametrs_json.get("protocol").toString(),Auth.UserData.getId(),ConnectionStatus
+                "",parametrs_json.get("protocol").toString(),Auth.UserData.getId(),ConnectionStatus,""
         ));
 
         return new ResponseModel("200",
@@ -173,7 +173,7 @@ public class DashboardController
         for(int i=0;i<AllConnections.size();i++)
         {
             System.out.println("Fn is "+Config.VT600Enc);
-            String ConnectionProp= KeyCoder.KeyCode(AllConnections.get(i), Config.VPNPort ,Config.VT600Enc);
+            String ConnectionProp= KeyCoder.KeyCode(AllConnections.get(i), Config.VPNPort ,Config.VPNTPort,Config.VT600Enc);
 
             System.out.println("Status : "+AllConnections.get(i).isStatus());
             if (AllConnections.get(i).isStatus())

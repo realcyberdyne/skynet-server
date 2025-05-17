@@ -1,26 +1,25 @@
 package com.cyberdyne.skynet.Services.VPN.Functions;
 
 import com.cyberdyne.skynet.Services.VPN.Encription.EncriptionBytesCLS;
-import com.cyberdyne.skynet.connection.manager.DTO.ConnectionDTO;
-import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;
+import com.cyberdyne.skynet.connection.manager.Statics.Statics;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EncVPNCore
+public class EncVPNCoreAutoKey
 {
     private final ExecutorService threadPool;
-    private final String encryptionKey;
+
 
     // Constructor for the encrypted proxy server
-    public EncVPNCore(int Port, String encryptionKey)
+    public EncVPNCoreAutoKey(int Port)
     {
-        // Store encryption key
-        this.encryptionKey = encryptionKey;
-
         // Create a thread pool for better resource management
         threadPool = Executors.newCachedThreadPool();
 
@@ -81,6 +80,9 @@ public class EncVPNCore
             // Decrypt the initial data - this should be the CONNECT request
             byte[] decryptedFirstPacket;
             try {
+                String IP =  clientSocket.getInetAddress().getHostAddress();
+                String encryptionKey = Statics.GetKey(IP);
+
                 decryptedFirstPacket = EncriptionBytesCLS.decrypt(firstPacket, encryptionKey);
             } catch (Exception e) {
                 System.err.println("Failed to decrypt initial request: " + e.getMessage());
@@ -195,6 +197,9 @@ public class EncVPNCore
                         System.arraycopy(buffer, 0, encryptedChunk, 0, bytesRead);
 
                         try {
+                            String IP =  clientSocket.getInetAddress().getHostAddress();
+                            String encryptionKey = Statics.GetKey(IP);
+
                             // Decrypt the data
                             byte[] decryptedData = EncriptionBytesCLS.decrypt(encryptedChunk, encryptionKey);
 

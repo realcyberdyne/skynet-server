@@ -6,7 +6,9 @@ import com.cyberdyne.skynet.connection.manager.Models.Users_Model;
 import com.cyberdyne.skynet.connection.manager.Services.DateTime.DateTime;
 import com.cyberdyne.skynet.connection.manager.Services.KeyGenerator.KeyGenerator;
 import com.cyberdyne.skynet.connection.manager.Statics.Statics;
+import com.google.common.hash.Hashing;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class ConnectionDTO
@@ -20,8 +22,13 @@ public class ConnectionDTO
             //Generate Key
             NConnection.setKey(KeyGenerator.GetGenerateKey());
 
+            String ConnectionHash = Hashing.sha256().hashString(NConnection.getKey(), StandardCharsets.UTF_8).toString();
+            NConnection.setConnection_hash(ConnectionHash);
+
+            System.out.println("Hashssss : "+NConnection.getConnection_hash());
+
             //Get generate sql quary
-            String Quary = "INSERT INTO connection_tbl (key,create_user_id,protocol,status) VALUES ('"+NConnection.getKey()+"',"+NConnection.getCreate_user_id()+",'"+NConnection.getProtocol()+"',"+NConnection.isStatus()+")";
+            String Quary = "INSERT INTO connection_tbl (key,create_user_id,protocol,status,connection_hash) VALUES ('"+NConnection.getKey()+"',"+NConnection.getCreate_user_id()+",'"+NConnection.getProtocol()+"',"+NConnection.isStatus()+",'"+NConnection.getConnection_hash()+"')";
 
             //Get submit on database
             return new DatabaseManager().OprationOnDatabase(Quary);
@@ -55,9 +62,18 @@ public class ConnectionDTO
                     String key = UserRow.get(1);
                     String protocol = UserRow.get(2);
                     long user_id = Long.parseLong(UserRow.get(3));
-                    boolean status = (UserRow.get(4).toString().equals("1"))?true:false;
+                    String connection_hash = UserRow.get(4);
+                    boolean status = (UserRow.get(5).toString().equals("1"))?true:false;
 
-                    Connectin_Models ConnectionData = new Connectin_Models(id, key, protocol, user_id, status);
+                    Connectin_Models ConnectionData = new Connectin_Models(
+                            id,
+                            key,
+                            protocol,
+                            user_id,
+                            status,
+                            Hashing.sha256().hashString(key, StandardCharsets.UTF_8).toString()
+                    );
+
                     result.add(ConnectionData);
                 }
                 catch (Exception e)
@@ -70,9 +86,6 @@ public class ConnectionDTO
         {
             System.out.println("Error in ConnectionDTO : "+e.getMessage());
         }
-
-        //Get set on connections
-        Statics.All_Connections = result;
 
         return result;
     }
@@ -96,13 +109,52 @@ public class ConnectionDTO
                 String key = SELECTUser.get(0).get(1);
                 String protocol = SELECTUser.get(0).get(2);
                 long user_id = Long.parseLong(SELECTUser.get(0).get(3));
-                boolean status = Boolean.parseBoolean(SELECTUser.get(0).get(4));
+                String connection_hash = SELECTUser.get(0).get(4);
+                boolean status = Boolean.parseBoolean(SELECTUser.get(0).get(5));
 
                 result.setId(connection_id);
                 result.setKey(key);
                 result.setProtocol(protocol);
                 result.setCreate_user_id(user_id);
                 result.setStatus(status);
+                result.setConnection_hash(connection_hash);
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error in ConnectionDTO : "+e.getMessage());
+        }
+        return result;
+    }
+
+
+    //Get All Connections
+    public Connectin_Models GetConnectionByHash(String Hash)
+    {
+        Connectin_Models result=new Connectin_Models();
+        try
+        {
+            //Get generate sql quary
+            String Quary = "SELECT * FROM connection_tbl WHERE connection_hash LIKE '"+Hash+"';";
+
+            //Get submit on database
+            ArrayList<ArrayList<String>> SELECTUser = new DatabaseManager().SelectFromDatabase(Quary);
+
+            if(SELECTUser.size()>0)
+            {
+                long connection_id = Long.parseLong(SELECTUser.get(0).get(0));
+                String key = SELECTUser.get(0).get(1);
+                String protocol = SELECTUser.get(0).get(2);
+                long user_id = Long.parseLong(SELECTUser.get(0).get(3));
+                String connection_hash = SELECTUser.get(0).get(4);
+                boolean status = Boolean.parseBoolean(SELECTUser.get(0).get(5));
+
+                result.setId(connection_id);
+                result.setKey(key);
+                result.setProtocol(protocol);
+                result.setCreate_user_id(user_id);
+                result.setStatus(status);
+                result.setConnection_hash(connection_hash);
             }
         }
         catch (Exception e)
@@ -138,7 +190,7 @@ public class ConnectionDTO
         try
         {
             //Get generate sql quary
-            String Quary = "UPDATE connection_tbl SET key='"+UConnection.getKey()+"',status="+UConnection.isStatus()+",protocol='"+UConnection.getProtocol()+"' WHERE id = "+UConnection.getId()+";";
+            String Quary = "UPDATE connection_tbl SET key='"+UConnection.getKey()+"',status="+UConnection.isStatus()+",protocol='"+UConnection.getProtocol()+"',connection_hash='"+UConnection.getConnection_hash()+"' WHERE id = "+UConnection.getId()+";";
 
             //Get submit on database
             return new DatabaseManager().OprationOnDatabase(Quary);

@@ -1,7 +1,9 @@
 package cyberdyne.generator;
 
 import com.cyberdyne.skynet.Services.VPN.Functions.EncVPNCore;
+import com.cyberdyne.skynet.Services.VPN.Functions.EncVPNCoreAutoKey;
 import com.cyberdyne.skynet.Services.VPN.Functions.VPNCore;
+import com.cyberdyne.skynet.Services.VPN.Functions.VPNHandShake;
 import com.cyberdyne.skynet.connection.manager.DTO.ConnectionDTO;
 import com.cyberdyne.skynet.connection.manager.Statics.Statics;
 import cyberdyne.generator.Conf.Config;
@@ -27,10 +29,8 @@ public class Main
         new HttpServer();
         System.out.println("Cyberdyne service : Http server is started");
 
-//        Get set on connections
-        Statics.All_Connections = new ConnectionDTO().GetSelectConnections();
-
-        new EncVPNCore(8085,"reza");
+        new VPNHandShake();
+        new EncVPNCoreAutoKey(8085);
 
     }
 }

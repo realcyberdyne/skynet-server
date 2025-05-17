@@ -8,29 +8,33 @@ public class Connectin_Models
     String protocol;
     long create_user_id;
     boolean status;
+    String connection_hash;
 
     public Connectin_Models() {
     }
 
-    public Connectin_Models(long id, String key, String protocol, long create_user_id, boolean status) {
+    public Connectin_Models(long id, String key, String protocol, long create_user_id, boolean status,String connection_hash) {
         this.id = id;
         this.key = key;
         this.protocol = protocol;
         this.create_user_id = create_user_id;
         this.status = status;
+        this.connection_hash = connection_hash;
     }
 
-    public Connectin_Models(String protocol, long create_user_id, boolean status) {
+    public Connectin_Models(String protocol, long create_user_id, boolean status,String connection_hash) {
         this.protocol = protocol;
         this.create_user_id = create_user_id;
         this.status = status;
+        this.connection_hash = connection_hash;
     }
 
-    public Connectin_Models(String key, String protocol, long create_user_id, boolean status) {
+    public Connectin_Models(String key, String protocol, long create_user_id, boolean status,String connection_hash) {
         this.key = key;
         this.protocol = protocol;
         this.create_user_id = create_user_id;
         this.status = status;
+        this.connection_hash = connection_hash;
     }
 
     public long getId() {
@@ -71,5 +75,13 @@ public class Connectin_Models
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getConnection_hash() {
+        return connection_hash;
+    }
+
+    public void setConnection_hash(String connection_hash) {
+        this.connection_hash = connection_hash;
     }
 }

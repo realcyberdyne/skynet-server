@@ -37,7 +37,7 @@ public class ConnectionDTOTests
     @Test
     public void GetUpdateConnectionInDataBaseTest()
     {
-        Connectin_Models Uconnection=new Connectin_Models(1,"SKJBJKCBDKJSBCKDSK","T100",1,true);
+        Connectin_Models Uconnection=new Connectin_Models(1,"SKJBJKCBDKJSBCKDSK","T100",1,true,"");
         Assert.assertEquals(new ConnectionDTO().GetUpdateConnection(Uconnection),true);
     }
 

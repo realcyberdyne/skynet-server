@@ -10,7 +10,7 @@ import java.util.Base64;
 public class KeyCoder
 {
 
-    public static String KeyCode(Connectin_Models connection,int Port,String fn)
+    public static String KeyCode(Connectin_Models connection,int Port,int TPort,String fn)
     {
         JSONObject result=new JSONObject();
 
@@ -19,7 +19,9 @@ public class KeyCoder
         result.put("protocol",connection.getProtocol());
         result.put("ip",GetIpAddress());
         result.put("port",Port);
+        result.put("tport",TPort);
         result.put("fn",fn);
+        result.put("hash",connection.getConnection_hash());
 
         String JsonResult = result.toString();
         String Base64JsonResult = Base64.getEncoder().encodeToString(JsonResult.getBytes());

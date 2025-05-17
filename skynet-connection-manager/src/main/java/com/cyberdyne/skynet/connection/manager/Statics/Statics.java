@@ -6,8 +6,20 @@ import java.util.ArrayList;
 
 public class Statics
 {
-    public static ArrayList<Connectin_Models> All_Connections;
+    public static ArrayList<IpConnection_Model> IpConnection=new ArrayList<>();
 
-    public static ArrayList<ArrayList<Object>> ConnectionMatrix;
+
+    //Get Find Key by ip
+    public static String GetKey(String IP)
+    {
+        for(int i=0;i<IpConnection.size();i++)
+        {
+            if(IpConnection.get(i).Ip.equals(IP))
+            {
+                return IpConnection.get(i).Key;
+            }
+        }
+        return "";
+    }
 
 }

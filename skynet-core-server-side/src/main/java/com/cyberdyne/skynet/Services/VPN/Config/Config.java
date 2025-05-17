@@ -9,6 +9,8 @@ public class Config
     //Global variables
     public static int VPNPort;
 
+    public static int VPNTPort;
+
     public static String VT600Enc;
 
 
@@ -28,6 +30,9 @@ public class Config
 
             //Proxy internal port repository address
             VPNPort=Integer.parseInt(properties.getProperty("VPNPort").toString());
+
+            //Proxy Thread port repository address
+            VPNTPort=Integer.parseInt(properties.getProperty("VPNTPort").toString());
 
             //Vpn T600 Protocol Encryption Key
             VT600Enc=properties.getProperty("VT600Enc").toString();

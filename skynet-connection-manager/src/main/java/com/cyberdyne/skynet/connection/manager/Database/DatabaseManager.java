@@ -75,6 +75,7 @@ public class DatabaseManager {
                             "key TEXT NOT NULL, " +
                             "protocol TEXT NOT NULL, " +
                             "create_user_id INTEGER NOT NULL, " +
+                            "connection_hash TEXT NOT NULL, " +
                             "status INTEGER DEFAULT 0)"
             );
 
@@ -140,6 +141,7 @@ public class DatabaseManager {
 
             //Get result set
             ResultSet Rs=statement.executeQuery(SelectQuary);
+
             ResultSetMetaData RSMD=Rs.getMetaData();
             int colnumcount = RSMD.getColumnCount();
 

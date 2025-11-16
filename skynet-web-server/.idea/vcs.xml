@@ -3,6 +3,5 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../skynet-core-server-side" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
 </project>

@@ -3,23 +3,29 @@ package com.cyberdyne.skynet.connection.manager.Statics;
 import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Statics
 {
-    public static ArrayList<IpConnection_Model> IpConnection=new ArrayList<>();
+    public static ConcurrentHashMap<String, String> IpConnection = new ConcurrentHashMap<>();
 
-
-    //Get Find Key by ip
     public static String GetKey(String IP)
     {
-        for(int i=0;i<IpConnection.size();i++)
-        {
-            if(IpConnection.get(i).Ip.equals(IP))
-            {
-                return IpConnection.get(i).Key;
-            }
+        System.out.println("Looking for IP: " + IP);
+        System.out.println("Available IPs: " + IpConnection.keySet());
+
+        String key = IpConnection.getOrDefault(IP, "");
+
+        if (key.isEmpty()) {
+            System.err.println("WARNING: No key found for IP: " + IP);
         }
-        return "";
+
+        return key;
     }
 
+    public static void AddKey(String IP, String Key)
+    {
+        IpConnection.put(IP, Key);
+        System.out.println("Added key for IP: " + IP);
+    }
 }

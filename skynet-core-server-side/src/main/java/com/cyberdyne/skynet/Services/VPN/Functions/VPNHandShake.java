@@ -62,12 +62,9 @@ public class VPNHandShake
                 //System.out.println("Key is : "+Connection.getKey());
 
                 //Get add to key connection data structure
-                Statics.IpConnection.add(
-                        new IpConnection_Model(
-                                Ipaddress,
-                                Connection.getKey(),
-                                Connection.getProtocol()
-                        )
+                Statics.IpConnection.put(
+                    Ipaddress,
+                    Connection.getKey()
                 );
             }
         }

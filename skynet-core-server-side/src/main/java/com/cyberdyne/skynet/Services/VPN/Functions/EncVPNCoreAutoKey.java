@@ -55,14 +55,32 @@ public class EncVPNCoreAutoKey
     }
 
     // Handle encrypted request from client proxy
+    // Handle encrypted request from client proxy
     private void HandleEncryptedRequest(Socket clientSocket)
     {
         Socket targetSocket = null;
+        String encryptionKey = null;
 
         try
         {
             InputStream clientInput = clientSocket.getInputStream();
             OutputStream clientOutput = clientSocket.getOutputStream();
+
+            // Get IP and encryption key at the beginning
+            String IP = clientSocket.getInetAddress().getHostAddress();
+            encryptionKey = Statics.GetKey(IP);
+
+            // Validate encryption key
+            if (encryptionKey == null || encryptionKey.isEmpty()) {
+                System.err.println("No encryption key found for IP: " + IP);
+                String errorResponse = "HTTP/1.1 401 Unauthorized\r\n\r\n";
+                clientOutput.write(errorResponse.getBytes());
+                clientOutput.flush();
+                clientSocket.close();
+                return;
+            }
+
+            System.out.println("Using encryption key for IP " + IP + ": " + encryptionKey);
 
             // Wait for first packet of data
             while (clientInput.available() == 0) {
@@ -80,13 +98,15 @@ public class EncVPNCoreAutoKey
             // Decrypt the initial data - this should be the CONNECT request
             byte[] decryptedFirstPacket;
             try {
-                String IP =  clientSocket.getInetAddress().getHostAddress();
-                String encryptionKey = Statics.GetKey(IP);
-
                 decryptedFirstPacket = EncriptionBytesCLS.decrypt(firstPacket, encryptionKey);
+                System.out.println("Successfully decrypted initial packet (" + firstPacket.length +
+                        " bytes → " + decryptedFirstPacket.length + " bytes)");
             } catch (Exception e) {
                 System.err.println("Failed to decrypt initial request: " + e.getMessage());
                 e.printStackTrace();
+                String errorResponse = "HTTP/1.1 400 Bad Request\r\n\r\n";
+                clientOutput.write(errorResponse.getBytes());
+                clientOutput.flush();
                 clientSocket.close();
                 return;
             }
@@ -122,8 +142,10 @@ public class EncVPNCoreAutoKey
             // Connect to the target server
             try {
                 targetSocket = new Socket(targetHost, targetPort);
+                System.out.println("Successfully connected to " + targetHost + ":" + targetPort);
             } catch (Exception e) {
                 System.err.println("Failed to connect to target: " + e.getMessage());
+                e.printStackTrace();
                 String errorResponse = "HTTP/1.1 502 Bad Gateway\r\n\r\n";
                 clientOutput.write(errorResponse.getBytes());
                 clientOutput.flush();
@@ -136,15 +158,17 @@ public class EncVPNCoreAutoKey
             clientOutput.write(successResponse.getBytes());
             clientOutput.flush();
 
-            System.out.println("Connected to " + targetHost + ":" + targetPort);
+            System.out.println("Tunnel established between client and " + targetHost + ":" + targetPort);
 
-            // Start bidirectional data transfer
-            Thread clientToTarget = decryptAndForward(clientSocket, targetSocket);
-            Thread targetToClient = forwardToClient(targetSocket, clientSocket);
+            // Start bidirectional data transfer with the encryption key
+            Thread clientToTarget = decryptAndForward(clientSocket, targetSocket, encryptionKey);
+            Thread targetToClient = forwardToClient(targetSocket, clientSocket, encryptionKey);
 
             // Wait for threads to complete
             clientToTarget.join();
             targetToClient.join();
+
+            System.out.println("Connection closed for " + targetHost + ":" + targetPort);
 
         } catch (Exception e) {
             System.err.println("Error in proxy handling: " + e.getMessage());
@@ -154,9 +178,11 @@ public class EncVPNCoreAutoKey
             try {
                 if (targetSocket != null && !targetSocket.isClosed()) {
                     targetSocket.close();
+                    System.out.println("Target socket closed");
                 }
                 if (!clientSocket.isClosed()) {
                     clientSocket.close();
+                    System.out.println("Client socket closed");
                 }
             } catch (IOException e) {
                 System.err.println("Error closing sockets: " + e.getMessage());
@@ -179,41 +205,31 @@ public class EncVPNCoreAutoKey
     }
 
     // Thread to decrypt data from client and forward to target
-    private Thread decryptAndForward(Socket clientSocket, Socket targetSocket) {
+    private Thread decryptAndForward(Socket clientSocket, Socket targetSocket, String encryptionKey) {
         Thread thread = new Thread(() -> {
             try {
                 InputStream clientInput = clientSocket.getInputStream();
                 OutputStream targetOutput = targetSocket.getOutputStream();
-                byte[] buffer = new byte[16384]; // Larger buffer for encrypted data
+                byte[] buffer = new byte[16384];
 
                 while (!clientSocket.isClosed() && !targetSocket.isClosed()) {
                     if (clientInput.available() > 0) {
-                        // Read encrypted data
                         int bytesRead = clientInput.read(buffer);
                         if (bytesRead <= 0) break;
 
-                        // Extract the actual data
                         byte[] encryptedChunk = new byte[bytesRead];
                         System.arraycopy(buffer, 0, encryptedChunk, 0, bytesRead);
 
                         try {
-                            String IP =  clientSocket.getInetAddress().getHostAddress();
-                            String encryptionKey = Statics.GetKey(IP);
-
-                            // Decrypt the data
+                            // استفاده از کلید ذخیره شده
                             byte[] decryptedData = EncriptionBytesCLS.decrypt(encryptedChunk, encryptionKey);
-
-                            // Forward to target
                             targetOutput.write(decryptedData);
                             targetOutput.flush();
-                            System.out.println("Client → Target: Decrypted and forwarded " + bytesRead +
-                                    " bytes → " + decryptedData.length + " bytes");
                         } catch (Exception e) {
                             System.err.println("Decryption error: " + e.getMessage());
                             break;
                         }
                     } else {
-                        // Sleep to prevent CPU spinning
                         Thread.sleep(5);
                     }
                 }
@@ -227,7 +243,7 @@ public class EncVPNCoreAutoKey
     }
 
     // Thread to forward data from target to client (no encryption)
-    private Thread forwardToClient(Socket targetSocket, Socket clientSocket) {
+    private Thread forwardToClient(Socket targetSocket, Socket clientSocket, String encryptionKey) {
 
         //Get Protocol hand shake in every request start
 //        try

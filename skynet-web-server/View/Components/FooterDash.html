@@ -1,0 +1,32 @@
+
+<script>
+    // Toggle sidebar functionality
+    document.getElementById('toggleSidebar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('open');
+    });
+
+    // Menu item active state
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+            menuItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Script for responsive behavior
+    function checkWidth() {
+        if (window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.remove('open');
+        }
+    }
+
+    // Check width on resize
+    window.addEventListener('resize', checkWidth);
+
+    // Initialize
+    checkWidth();
+</script>
+<script src="/js/app.js"></script>
+</body>
+</html>

@@ -63,6 +63,7 @@ public class EncriptionBytesCLS
         // Decrypt
         Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
+        System.out.println("Key : "+key);
         return cipher.doFinal(encryptedBytes);
     }
 

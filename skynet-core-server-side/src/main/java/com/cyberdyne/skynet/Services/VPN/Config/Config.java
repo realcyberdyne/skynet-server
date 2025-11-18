@@ -12,6 +12,8 @@ public class Config
     public static int VPNTPort = 8089;
     public static String VT600Enc = "ZR8Mag$H?k{giJLg}8B0bcJS";
 
+    public static String SERVER_IP = "127.0.0.1";
+
     //Get constructor
     public Config()
     {
@@ -60,6 +62,9 @@ public class Config
             if (vt600EncStr != null) {
                 VT600Enc = vt600EncStr;
             }
+
+            //Get vpn server ip address
+            SERVER_IP = properties.getProperty("ip_address");
 
             System.out.println("Vpn Config file is loaded");
             System.out.println("VPNPort: " + VPNPort);

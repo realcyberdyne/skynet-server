@@ -173,7 +173,7 @@ public class DashboardController
         for(int i=0;i<AllConnections.size();i++)
         {
             System.out.println("Fn is "+Config.VT600Enc);
-            String ConnectionProp= KeyCoder.KeyCode(AllConnections.get(i), Config.VPNPort ,Config.VPNTPort,Config.VT600Enc);
+            String ConnectionProp= KeyCoder.KeyCode(AllConnections.get(i), Config.VPNPort ,Config.VPNTPort,Config.VT600Enc,Config.SERVER_IP);
 
             System.out.println("Status : "+AllConnections.get(i).isStatus());
             if (AllConnections.get(i).isStatus())

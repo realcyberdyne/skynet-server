@@ -10,14 +10,14 @@ import java.util.Base64;
 public class KeyCoder
 {
 
-    public static String KeyCode(Connectin_Models connection,int Port,int TPort,String fn)
+    public static String KeyCode(Connectin_Models connection,int Port,int TPort,String fn,String IP)
     {
         JSONObject result=new JSONObject();
 
         result.put("id",connection.getId());
         result.put("key",connection.getKey());
         result.put("protocol",connection.getProtocol());
-        result.put("ip",GetIpAddress());
+        result.put("ip",IP);
         result.put("port",Port);
         result.put("tport",TPort);
         result.put("fn",fn);

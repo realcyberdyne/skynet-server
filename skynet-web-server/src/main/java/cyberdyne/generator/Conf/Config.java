@@ -19,6 +19,7 @@ public class Config
     public static String Http_Log_File_Address="/logs.log";
     public static int FileSize=17000000;
     public static int FileSizeSpli=256;
+    public static String SERVER_IP = "127.0.0.1";
 
     public Config()
     {
@@ -65,6 +66,9 @@ public class Config
 
             // File spli array size conf
             FileSizeSpli = Integer.parseInt(properties.getProperty("file_spli_size"));
+
+            //Get vpn server ip address
+            SERVER_IP = properties.getProperty("ip_address");
 
             System.out.println("Config file loaded successfully!");
             System.out.println("Root_Dir: " + Root_Dir);

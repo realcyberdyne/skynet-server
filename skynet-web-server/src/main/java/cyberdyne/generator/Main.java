@@ -1,11 +1,9 @@
 package cyberdyne.generator;
 
-import com.cyberdyne.skynet.Services.VPN.Functions.EncVPNCore;
 import com.cyberdyne.skynet.Services.VPN.Functions.EncVPNCoreAutoKey;
-import com.cyberdyne.skynet.Services.VPN.Functions.VPNCore;
+import com.cyberdyne.skynet.Services.VPN.Functions.EncVPNCoreAutoKey_AI;
 import com.cyberdyne.skynet.Services.VPN.Functions.VPNHandShake;
-import com.cyberdyne.skynet.connection.manager.DTO.ConnectionDTO;
-import com.cyberdyne.skynet.connection.manager.Statics.Statics;
+import com.cyberdyne.skynet.Services.VPN.Functions.VPNHandShakeAI;
 import cyberdyne.generator.Conf.Config;
 import cyberdyne.generator.Http.HttpServer;
 
@@ -29,8 +27,8 @@ public class Main
         new HttpServer();
         System.out.println("Cyberdyne service : Http server is started");
 
-        new VPNHandShake();
-        new EncVPNCoreAutoKey(8085);
+        new VPNHandShakeAI();
+        new EncVPNCoreAutoKey_AI(8085);
 
     }
 }

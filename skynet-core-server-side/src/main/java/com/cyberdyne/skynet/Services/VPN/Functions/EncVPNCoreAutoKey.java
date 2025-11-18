@@ -1,7 +1,7 @@
 package com.cyberdyne.skynet.Services.VPN.Functions;
 
 import com.cyberdyne.skynet.Services.VPN.Encription.EncriptionBytesCLS;
-import com.cyberdyne.skynet.connection.manager.Statics.Statics;
+import com.cyberdyne.skynet.connection.manager.Statics.Statics_old;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -81,7 +81,7 @@ public class EncVPNCoreAutoKey
             byte[] decryptedFirstPacket;
             try {
                 String IP =  clientSocket.getInetAddress().getHostAddress();
-                String encryptionKey = Statics.GetKey(IP);
+                String encryptionKey = Statics_old.GetKey(IP);
 
                 decryptedFirstPacket = EncriptionBytesCLS.decrypt(firstPacket, encryptionKey);
             } catch (Exception e) {
@@ -198,7 +198,7 @@ public class EncVPNCoreAutoKey
 
                         try {
                             String IP =  clientSocket.getInetAddress().getHostAddress();
-                            String encryptionKey = Statics.GetKey(IP);
+                            String encryptionKey = Statics_old.GetKey(IP);
 
                             // Decrypt the data
                             byte[] decryptedData = EncriptionBytesCLS.decrypt(encryptedChunk, encryptionKey);

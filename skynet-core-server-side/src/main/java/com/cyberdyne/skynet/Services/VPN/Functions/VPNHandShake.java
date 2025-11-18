@@ -4,13 +4,12 @@ import com.cyberdyne.skynet.Services.VPN.Config.Config;
 import com.cyberdyne.skynet.connection.manager.DTO.ConnectionDTO;
 import com.cyberdyne.skynet.connection.manager.Models.Connectin_Models;
 import com.cyberdyne.skynet.connection.manager.Statics.IpConnection_Model;
-import com.cyberdyne.skynet.connection.manager.Statics.Statics;
+import com.cyberdyne.skynet.connection.manager.Statics.Statics_old;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class VPNHandShake
 {
@@ -62,7 +61,7 @@ public class VPNHandShake
                 //System.out.println("Key is : "+Connection.getKey());
 
                 //Get add to key connection data structure
-                Statics.IpConnection.add(
+                Statics_old.IpConnection.add(
                         new IpConnection_Model(
                                 Ipaddress,
                                 Connection.getKey(),
